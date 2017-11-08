@@ -38,11 +38,26 @@ classdef list < handle
                 index = length(self);
             end
             out = self.head;
+            if index == 1
+                self.head = self.head.next;
+            end
             for ii = 2:index
                 out = out.next;
             end
             self.len = self.len - 1;
             out = out.pop();
+        end
+        
+        function insert(self, x, index)
+            new = listelement(x);
+            if index == 1
+                new.insertBefore(self.head)
+                self.head = new;
+            else
+                node = subsref(self, substruct('()', {index}));
+                new.insertBetween(node, node.next)
+            end
+            self.len = self.len + 1;
         end
         
         function len = length(self)
