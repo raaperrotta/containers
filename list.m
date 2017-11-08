@@ -55,7 +55,7 @@ classdef list < handle
                 self.head = new;
             else
                 node = subsref(self, substruct('()', {index}));
-                new.insertBetween(node, node.next)
+                new.insertBetween(node.prev, node)
             end
             self.len = self.len + 1;
         end
