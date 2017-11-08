@@ -6,7 +6,7 @@ classdef uniquelist < handle
     
     methods
         
-        function self = set(array) %#ok<STOUT> It's a handle
+        function self = uniquelist(array)
             if nargin < 1
                 array = [];
             end
