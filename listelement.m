@@ -15,6 +15,10 @@ classdef listelement < handle
             self.data = data;
         end
         
+        function bool = hasNext(self)
+            bool = ~isempty(self.next);
+        end
+        
         function insertAfter(self, node_before)
             self.prev = node_before;
             node_before.next = self;
@@ -31,8 +35,12 @@ classdef listelement < handle
         end
         
         function value = pop(self)
-            self.next.prev = self.prev;
-            self.prev.next = self.next;
+            if ~isempty(self.next)
+                self.next.prev = self.prev;
+            end
+            if ~isempty(self.prev)
+                self.prev.next = self.next;
+            end
             value = self.data;
         end
         

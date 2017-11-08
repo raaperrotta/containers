@@ -53,6 +53,41 @@ classdef list < handle
             out = self.len == 0;
         end
         
+        function bool = contains(self, value)
+            if isempty(self)
+                bool = false;
+                return
+            end
+            bool = true;
+            node = self.head;
+            while true
+                if isequal(node.data, value)
+                    return
+                elseif node.hasNext()
+                    node = node.next;
+                else
+                    break
+                end
+            end
+            bool = false;
+        end
+        
+        function ind = index(self, value)
+            ind = 1;
+            node = self.head;
+            if isequal(node.data, value)
+                return
+            end
+            while node.hasNext()
+                node = node.next;
+                ind = ind + 1;
+                if isequal(node.data, value)
+                    return
+                end
+            end
+            error('list:index', 'Value not found in list.')
+        end
+        
         function varargout = subsref(self, index)
             if any(strcmp(index(1).type, {'()', '{}'})) && isscalar(index(1).subs)
                 assert(index(1).subs{1} >= 1, 'list index must be a positive number')
@@ -91,6 +126,11 @@ classdef list < handle
                     out{ii} = element.data;
                 end
             end
+        end
+        
+        function out = sorted(self)
+            % Only works when all elements have string values
+            out = sort(self.items());
         end
         
     end
