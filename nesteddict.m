@@ -2,8 +2,11 @@ classdef nesteddict < handle & defaultdict
     
     methods
         
-        function self = nesteddict()
-            self@defaultdict(@nesteddict)
+        function self = nesteddict(default)
+            if nargin < 1
+                default = @nesteddict;
+            end
+            self@defaultdict(default)
         end
         
         function sub = subsref(self, index)
