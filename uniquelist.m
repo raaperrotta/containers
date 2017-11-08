@@ -1,7 +1,7 @@
 classdef uniquelist < handle
     
     properties (SetAccess=private, Hidden)
-        data = list()
+        data
     end
     
     methods
@@ -10,6 +10,7 @@ classdef uniquelist < handle
             if nargin < 1
                 array = [];
             end
+            self.data = list();
             assert(sum(size(array)>1) <= 1, 'Can only create set from 1D data.')
             if iscell(array)
                 cellfun(@(x) self.add(x), array)
@@ -42,25 +43,19 @@ classdef uniquelist < handle
         end
         
         function varargout = subsref(self, index)
-            if any(strcmp(index(1).type, {'()', '{}'})) && isscalar(index(1).subs)
-                assert(index(1).subs{1} >= 1, 'list index must be a positive number')
-                assert(index(1).subs{1} <= length(self), 'index out of range')
-                out = self.head;
-                for ii = 2:index(1).subs{1}
-                    out = out.next;
-                end
-                if strcmp(index(1).type, '{}')
-                    out = out.data;
-                end
+            if strcmp(index(1).type, '()')
+                sub = self.data{index(1).subs{:}};
                 if length(index) > 1
-                    varargout = {subsref(out, index(2:end))};
+                    varargout = {subsref(sub, index(2:end))};
                 else
-                    varargout = {out};
+                    varargout = {sub};
                 end
-            elseif nargout
-                varargout = {builtin('subsref', self, index)};
             else
-                builtin('subsref', self, index)
+                if nargout
+                    varargout = {builtin('subsref', self, index)};
+                else
+                    builtin('subsref', self, index)
+                end
             end
         end
         
