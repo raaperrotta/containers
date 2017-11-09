@@ -1,4 +1,4 @@
-classdef defaultdict < handle & dict
+classdef defaultdict < dict
     
     properties (SetAccess = private)
         default
@@ -18,6 +18,14 @@ classdef defaultdict < handle & dict
                 self.subsasgn(index(1), self.default());
             end
             sub = self.subsref@dict(index);
+        end
+        
+        function new = copy(self)
+            new = defaultdict(self.default);
+            for iter = self.items()
+                [key, val] = iter{:};
+                new(key) = val;
+            end
         end
         
     end
