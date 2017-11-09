@@ -30,6 +30,10 @@ classdef dict < handle & containers.Map
             data = [self.keys(); self.values()];
         end
         
+        function new = copy(self)
+            new = dict(self.keys(), self.values());
+        end
+        
     end
     
     methods (Hidden)
