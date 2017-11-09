@@ -1,4 +1,4 @@
-classdef nesteddict < handle & defaultdict
+classdef nesteddict < defaultdict
     
     methods
         
@@ -15,7 +15,7 @@ classdef nesteddict < handle & defaultdict
                     all(cellfun(@(s)ischar(s), index(1).subs))
                 sub = self;
                 for ref = index(1).subs
-                    sub = sub.subsref@defaultdict(substruct('()', ref));
+                    sub = sub.subsref(substruct('()', ref));
                 end
                 if length(index) > 1
                     sub = self.subsref(index(2:end));
